@@ -11,7 +11,7 @@ public class Stack {
     public void print_stacks(){
         for(int i=0; i<this.getStacks().size();i++){
             int pies = i+1;
-            System.out.println("Card on stack nr: " + pies + " " + this.getStacks().get(i));
+            System.out.println("Card on stack nr " + pies + ": " + this.getStacks().get(i));
         }
     }
     public void setStacks(ArrayList<Stack> stacks) {

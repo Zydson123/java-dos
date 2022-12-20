@@ -103,7 +103,7 @@ public class Card {
             Deck.add(new Card("#","Yellow"));
         }
         for(int i=0;i<12;i++){
-            Deck.add(new Card("Dos","None"));
+            Deck.add(new Card("2","None"));
         }
 
     }
