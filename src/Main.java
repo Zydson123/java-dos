@@ -3,18 +3,17 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String amount2;
+        int amount =0;
+        String amount2="";
         Card forFill = new Card("pies","pies");
         Stack forFillStack = new Stack(forFill);
         forFill.fillDeck();
         ArrayList<Card> deck = forFill.getDeck();
-        int playerAmount = 2;
         Player player1 = new Player("Player 1");
         Player player2= new Player("Player 2");
         Player turn = player1;
         Stack selectedStack = forFillStack;
-        boolean isValid=false;
-        while(!isValid){
+        while(true){
             int cardForStack = (int)(Math.random()* deck.size());
             System.out.println(deck.get(cardForStack).getType());
             if(deck.get(cardForStack).getType()!="#" && deck.get(cardForStack).getType()!="Dos"){
@@ -24,8 +23,7 @@ public class Main {
                 break;
             }
         }
-        isValid=false;
-        while(!isValid) {
+        while(true) {
             int cardForStack = (int) (Math.random() * deck.size());
             System.out.println(deck.get(cardForStack).getType());
             if (deck.get(cardForStack).getType() != "#" && deck.get(cardForStack).getType() != "Dos") {
@@ -37,12 +35,6 @@ public class Main {
         }
         player1.giveCards(deck,player1);
         player2.giveCards(deck,player2);
-        player1.getCards().add(new Card("1", "Red"));
-        player1.getCards().add(new Card("1", "Red"));
-        player2.getCards().add(new Card("1", "Red"));
-        player2.getCards().add(new Card("1", "Red"));
-        forFillStack.getStacks().add(new Stack(new Card("1", "Red")));
-        forFillStack.getStacks().add(new Stack(new Card("2", "Red")));
         while(true){
             if(player1.getCards().size()==0){
                 System.out.println("Player 1 won!");
@@ -103,15 +95,27 @@ public class Main {
                                     else{
                                         forFillStack.getStacks().add(new Stack(turn.getCards().get(whichCard)));
                                         turn.getCards().remove(turn.getCards().get(whichCard));
+                                        if(turn==player1)
+                                            turn = player2;
+                                        else
+                                            turn=player1;
                                     }
                                 }
                                 else if(cot.getColor()== card.getColor() || cot.getColor()=="None" || card.getColor()=="None"){
                                     selectedStack.setCardOnTop(card);
                                     turn.getCards().remove(card);
+                                    if(turn==player1)
+                                        turn = player2;
+                                    else
+                                        turn=player1;
                                 }
                                 else if(cot.getType()== card.getType() || cot.getType()=="#" || card.getType()=="#"){
                                     selectedStack.setCardOnTop(card);
                                     turn.getCards().remove(card);
+                                    if(turn==player1)
+                                        turn = player2;
+                                    else
+                                        turn=player1;
                                 }
                             }
                         }
@@ -145,16 +149,19 @@ public class Main {
                                     if(card2.getType()=="#"){
                                         System.out.println("Choose the value of your wild card");
                                         String value = scanner.nextLine();
-                                        int amount = Integer.parseInt(card1.getType()) + Integer.parseInt(value);
+                                        amount = Integer.parseInt(card1.getType()) + Integer.parseInt(value);
                                         amount2 = String.valueOf(amount);
                                     }
                                     else{
-                                        int amount = Integer.parseInt(card1.getType()) + Integer.parseInt(card2.getType());
+                                        amount = Integer.parseInt(card1.getType()) + Integer.parseInt(card2.getType());
                                         amount2 = String.valueOf(amount);
                                     }
-                                    if(
-                                            (cot.getColor().equals(color) || cot.getColor()=="None" || color=="None")
-                                                    && (cot.getType().equals(amount2) || cot.getType()=="#" || card2.getType()=="#"))
+                                    if(amount>10){
+                                        System.out.println("The total of both cards can't be bigger than 10!");
+                                    }
+                                    else if(
+                                            (cot.getColor().equals(color) || cot.getColor().equals("None") || color.equals("None"))
+                                                    && (cot.getType().equals(amount2) || cot.getType().equals("#") || card2.getType().equals("#")))
                                     {
                                         turn.print_cards();
                                         System.out.println("You have to make a new stack using one of your cards, choose it");
@@ -167,13 +174,28 @@ public class Main {
                                             Card card = turn.getCards().get(whichCard);
                                             forFillStack.getStacks().add(new Stack(card));
                                             turn.getCards().remove(card);
+                                            if(turn==player1)
+                                                turn = player2;
+                                            else
+                                                turn=player1;
                                         }
                                     }
-                                    else if(cot.getColor()== color|| cot.getColor()=="None" || color=="None"){
+                                    else if(cot.getColor() == color|| cot.getColor()=="None" || color=="None"){
                                         selectedStack.setCardOnTop(card2);
+                                        if(turn==player1)
+                                            turn = player2;
+                                        else
+                                            turn=player1;
                                     }
-                                    else if(cot.getType()== amount2 || cot.getType()=="#" || card2.getType()=="#"){
+                                    else if((cot.getType()== amount2) || cot.getType()=="#" || card2.getType()=="#"){
                                         selectedStack.setCardOnTop(card2);
+                                        if(turn==player1)
+                                            turn = player2;
+                                        else
+                                            turn=player1;
+                                    }
+                                    else{
+                                        System.out.println("This is not a valid card combination!");
                                     }
                                 }
                             }
@@ -181,10 +203,7 @@ public class Main {
                         else{
                             System.out.println("This is not a valid option!");
                         }
-                        if(turn==player1)
-                            turn = player2;
-                        else
-                            turn=player1;
+
                         }
                 }
             }
